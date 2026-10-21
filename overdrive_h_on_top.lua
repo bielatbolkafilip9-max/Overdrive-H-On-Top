@@ -1,6 +1,5 @@
-
 -- Overdrive H On Top
--- Version 1.0.0
+-- Version 1.0.1
 
 local shared = odh_shared_plugins
 
@@ -11,7 +10,8 @@ end
 local pluginEnabled = true
 local selectedPlayerName = "No player selected"
 
-local iconPath = "/bielatbolkafilip9-max/Overdrive-H-On-Top/refs/heads/main/icon.png.PNG"
+local iconPath =
+    "bielatbolkafilip9-max/Overdrive-H-On-Top/refs/heads/main/icon.png"
 
 local tab = shared.CreateTab(
     "Overdrive H On Top",
@@ -20,45 +20,58 @@ local tab = shared.CreateTab(
 
 local section = tab:AddSection(
     "Utility Panel",
-    "OVERDRIVE H ON TOP | V1.0.0"
+    "OVERDRIVE H ON TOP | V1.0.1"
 )
 
-section:AddLabel("Created by: YOUR_NAME")
+section:AddLabel("Credits: Fobbi")
 
 section:AddParagraph(
     "Welcome",
-    "Your utility plugin is loaded."
+    "Overdrive H On Top has loaded."
 )
 
 section:AddToggle("Enable Plugin", function(state)
     pluginEnabled = state
 
-    if state then
-        shared.Notify("Plugin enabled.", 2)
-    else
-        shared.Notify("Plugin disabled.", 2)
+    shared.Notify(
+        state and "Plugin enabled." or "Plugin disabled.",
+        2
+    )
+end)
+
+section:AddSlider("Notification Duration", 1, 10, 3, function(value)
+    if pluginEnabled then
+        shared.Notify("Notification duration: " .. value, value)
+    end
+end)
+
+section:AddDropdown(
+    "Quick Message",
+    {"Hello!", "Plugin loaded!", "Overdrive H"},
+    function(selected)
+        if pluginEnabled then
+            shared.Notify(selected, 3)
+        end
+    end
+)
+
+section:AddTextBox("Custom Notification", function(text)
+    if pluginEnabled and text ~= "" then
+        shared.Notify(text, 3)
     end
 end)
 
 section:AddPlayerDropdown("Select Player", function(player)
-    if type(player) == "string" then
-        selectedPlayerName = player
-    elseif player and player.Name then
+    if player and player.Name then
         selectedPlayerName = player.Name
-    else
-        selectedPlayerName = "No player selected"
+        shared.Notify("Selected: " .. selectedPlayerName, 2)
     end
-
-    shared.Notify("Selected: " .. selectedPlayerName, 2)
 end)
 
 section:AddButton("Show Selected Player", function()
-    if not pluginEnabled then
-        shared.Notify("Enable the plugin first.", 2)
-        return
+    if pluginEnabled then
+        shared.Notify("Selected player: " .. selectedPlayerName, 3)
     end
-
-    shared.Notify("Selected player: " .. selectedPlayerName, 3)
 end)
 
 section:AddButton("Check Plugin Status", function()
@@ -71,3 +84,4 @@ end)
 section:AddButton("Test Notification", function()
     shared.Notify("Overdrive H On Top is working!", 3)
 end)
+
