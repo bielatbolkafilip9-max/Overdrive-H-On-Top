@@ -11,7 +11,7 @@ local pluginEnabled = true
 local selectedPlayerName = "No player selected"
 
 local iconPath =
-    "bielatbolkafilip9-max/Overdrive-H-On-Top/refs/heads/main/icon.png"
+    "/bielatbolkafilip9-max/Overdrive-H-On-Top/refs/heads/main/icon"
 
 local tab = shared.CreateTab(
     "Overdrive H On Top",
